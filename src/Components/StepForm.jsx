@@ -12,7 +12,7 @@ import SecondStep from "./SecondStep";
 import RepeatedStep from "./RepeatedStep";
 import Confirm from "./Confirm";
 import submited from "./../submited.png";
-import { Grid } from "@material-ui/core";
+import { Grid, CircularProgress } from "@material-ui/core";
 
 const ColorlibConnector = withStyles({
   alternativeLabel: {
@@ -170,12 +170,38 @@ export default function StepForm() {
 
   const steps = getSteps();
 
+  const [loading, setLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
+  const timer = React.useRef();
+
+  React.useEffect(() => {
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, []);
+
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (!loading) {
+      setSuccess(false);
+      setLoading(true);
+      timer.current = setTimeout(() => {
+        setSuccess(true);
+        setLoading(false);
+      }, 500);
+    }
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    if (!loading) {
+      setSuccess(false);
+      setLoading(true);
+      timer.current = setTimeout(() => {
+        setSuccess(true);
+        setLoading(false);
+      }, 1000);
+    }
   };
 
   const handleReset = () => {
@@ -327,12 +353,12 @@ export default function StepForm() {
         </>
       ) : (
         <div className={classes.root}>
-          <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
+          <Stepper style={{ padding: 8 }} alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
             {steps.map((label, index) => (
               <Step className={classes.iconWrapper} key={index}>
                 <StepLabel
                   classes={{
-                    root: classes.root, // class name, e.g. `root-x`
+                    root: classes.root,
                     active: classes.active,
                     label: classes.label,
                     completed: classes.completed,
@@ -344,7 +370,13 @@ export default function StepForm() {
               </Step>
             ))}
           </Stepper>
-          {handleSteps(activeStep, steps)}
+          {!loading ? (
+            handleSteps(activeStep, steps)
+          ) : (
+            <div style={{ paddingTop: "70px", minHeight: "200px", display: "flex", justifyContent: "center" }}>
+              <CircularProgress size={68} className={classes.fabProgress} />
+            </div>
+          )}
         </div>
       )}
     </>

@@ -15,11 +15,11 @@ const FirstStep = ({ handleNext, formTitle, handleChange, values: { phone, count
 
   return (
     <>
-      <Typography variant="h4" align="center" style={{ marginTop: 80 }}>
+      <Typography variant="h4" align="center">
         {formTitle}
       </Typography>
       <Grid style={{ justifyContent: "center" }} container spacing={4} noValidate>
-        <Grid item xs={8} sm={8}>
+        <Grid item xs={8} sm={7}>
           <FormControl fullWidth required margin="normal">
             <InputLabel htmlFor="country">Country</InputLabel>
             <Select value={country} onChange={handleChange("country")}>
@@ -28,7 +28,7 @@ const FirstStep = ({ handleNext, formTitle, handleChange, values: { phone, count
             </Select>
           </FormControl>
         </Grid>
-        <Grid item sm={8}>
+        <Grid item sm={7}>
           <ReactInputMask
             mask="9-9999-9999"
             // value={}

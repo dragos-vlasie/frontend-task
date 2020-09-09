@@ -6,6 +6,7 @@ import StepForm from "./Components/StepForm";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    paddingBottom: "60px",
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
-    padding: theme.spacing(2),
+    padding: theme.spacing(6),
   },
 }));
 
@@ -45,10 +46,10 @@ export default function App() {
           </Typography>
         </Toolbar>
         <main className={classes.layout}>
-          <Typography variant="h4" align="center" style={{ marginTop: 80 }}>
+          <Typography variant="h4" align="center" style={{ color: "#4fb1a3" }}>
             Registration Form
           </Typography>
-          <Typography variant="subtitle2" align="center" style={{ marginTop: 10, marginBottom: 10 }}>
+          <Typography variant="subtitle2" align="center" style={{ color: "#4fb1a3", marginTop: 10, marginBottom: 10 }}>
             This is a registration form.
           </Typography>
           <Paper className={classes.paper}>

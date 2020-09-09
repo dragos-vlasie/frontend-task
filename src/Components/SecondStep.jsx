@@ -27,7 +27,7 @@ const SecondStep = ({
   const isEmpty = age > 0 && email.length > 0 && isEmail.test(email);
   return (
     <>
-      <Typography variant="h4" align="center" style={{ marginTop: 80 }}>
+      <Typography variant="h4" align="center">
         {formTitle}
       </Typography>
       <Grid style={{ justifyContent: "center" }} container spacing={4} noValidate>

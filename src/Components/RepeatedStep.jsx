@@ -19,7 +19,7 @@ const RepeatedStep = ({
 
   return (
     <>
-      <Typography variant="h4" align="center" style={{ marginTop: 80 }}>
+      <Typography variant="h4" align="center">
         {formTitle}
       </Typography>
       <Grid container spacing={2} noValidate>
