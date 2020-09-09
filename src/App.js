@@ -1,11 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import { Paper } from "@material-ui/core";
-
-import Divider from "@material-ui/core/Divider";
+import { Paper, Typography, Toolbar, AppBar } from "@material-ui/core";
+import StepForm from "./Components/StepForm";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +21,16 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "none",
     borderBottom: "1px solid #f5f4f2",
   },
+  layout: {
+    width: "auto",
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+  },
+  paper: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+    padding: theme.spacing(2),
+  },
 }));
 
 export default function App() {
@@ -39,14 +45,9 @@ export default function App() {
           </Typography>
         </Toolbar>
         <main className={classes.layout}>
-          <Typography variant="h4" align="center" style={{ marginTop: 80, color: "#4fb1a3" }}>
-            Registration form
-          </Typography>
-          <Typography variant="subtitle2" align="center" style={{ marginTop: 10, marginBottom: 10 }}>
-            This is some registration form
-          </Typography>
-          <Paper className={classes.paper}>Stepform</Paper>
-          <Divider style={{ marginTop: 100 }} />
+          <Paper className={classes.paper}>
+            <StepForm />
+          </Paper>
         </main>
       </AppBar>
     </div>
