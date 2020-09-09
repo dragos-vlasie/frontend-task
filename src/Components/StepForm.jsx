@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
@@ -8,6 +8,8 @@ import StepLabel from "@material-ui/core/StepLabel";
 import StepConnector from "@material-ui/core/StepConnector";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import FirstStep from "./FirstStep";
+import SecondStep from "./SecondStep";
 
 const ColorlibConnector = withStyles({
   alternativeLabel: {
@@ -154,9 +156,28 @@ function getStepContent(step, steps) {
   }
 }
 
-export default function CustomizedSteppers() {
+const emailRegex = RegExp(/^[^@]+@[^@]+\.[^@]+$/);
+const phoneRegex = RegExp(/^\d{9}$/);
+
+export default function StepForm() {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(1);
+  const [activeStep, setActiveStep] = useState(1);
+  const [fields, setFields] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    country: "",
+    ageValue: "",
+    phone: "",
+  });
+
+  // Copy fields as they all have the same name
+  const [filedError, setFieldError] = useState({
+    ...fields,
+  });
+
+  const [isError, setIsError] = useState(false);
+
   const steps = getSteps();
 
   const handleNext = () => {
@@ -171,39 +192,101 @@ export default function CustomizedSteppers() {
     setActiveStep(1);
   };
 
+  // Handle fields change
+  const handleChange = (input) => ({ target: { value } }) => {
+    // Set values to the fields
+    setFields({
+      ...fields,
+      [input]: value,
+    });
+
+    // Handle errors
+    const formErrors = { ...filedError };
+    const lengthValidate = value.length > 0 && value.length < 3;
+
+    switch (input) {
+      case "firstName":
+        formErrors.firstName = lengthValidate ? "Minimum 3 characaters required" : "";
+        break;
+      case "lastName":
+        formErrors.lastName = lengthValidate ? "Minimum 3 characaters required" : "";
+        break;
+      case "email":
+        formErrors.email = emailRegex.test(value) ? "" : "Invalid email address";
+        break;
+      case "phone":
+        formErrors.phone = phoneRegex.test(parseInt(value.split("-").join("")))
+          ? ""
+          : "Please enter a valid phone number. i.e: x-xxxx-xxxxx";
+        break;
+      default:
+        break;
+      // set error hook
+    }
+    Object.values(formErrors).forEach((error) => (error.length > 0 ? setIsError(true) : setIsError(false)));
+    // set errors hook
+    setFieldError({
+      ...formErrors,
+    });
+  };
+
+  const handleSteps = (step) => {
+    step = 2;
+    switch (step) {
+      case 1:
+        return (
+          <FirstStep
+            handleNext={handleNext}
+            handleChange={handleChange}
+            values={fields}
+            isError={isError}
+            filedError={filedError}
+          />
+        );
+      case 2:
+        return (
+          <SecondStep
+            handleNext={handleNext}
+            handleBack={handleBack}
+            handleChange={handleChange}
+            values={fields}
+            isError={isError}
+            filedError={filedError}
+          />
+        );
+      default:
+        break;
+    }
+  };
+
   return (
-    <div className={classes.root}>
-      <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
-        {steps.map((label, index) => (
-          <Step className={classes.iconWrapper} key={index}>
-            <StepLabel className={classes.label1} StepIconComponent={ColorlibStepIcon}></StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      <div>
-        {activeStep === steps.length ? (
+    <>
+      {activeStep === steps.length ? (
+        <div>
+          <Typography className={classes.instructions}>All steps completed - you&apos;re finished</Typography>
+          <Button onClick={handleReset} className={classes.button}>
+            Reset
+          </Button>
+        </div>
+      ) : (
+        <div className={classes.root}>
+          <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
+            {steps.map((label, index) => (
+              <Step className={classes.iconWrapper} key={index}>
+                <StepLabel className={classes.label1} StepIconComponent={ColorlibStepIcon}></StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          {handleSteps(activeStep)}
           <div>
-            <Typography className={classes.instructions}>All steps completed - you&apos;re finished</Typography>
-            <Button onClick={handleReset} className={classes.button}>
-              Reset
-            </Button>
-          </div>
-        ) : (
-          <div>
-            <Typography variant="h4" className={classes.instructions}>
-              {getStepContent(activeStep, steps)}
-            </Typography>
             <div>
-              <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-                Back
-              </Button>
-              <Button variant="contained" color="primary" onClick={handleNext} className={classes.button}>
-                {activeStep === steps.length - 1 ? "Finish" : "Next"}
-              </Button>
+              <Typography variant="h4" className={classes.instructions}>
+                {getStepContent(activeStep, steps)}
+              </Typography>
             </div>
           </div>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 }

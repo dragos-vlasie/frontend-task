@@ -45,6 +45,12 @@ export default function App() {
           </Typography>
         </Toolbar>
         <main className={classes.layout}>
+          <Typography variant="h4" align="center" style={{ marginTop: 80 }}>
+            Registration Form
+          </Typography>
+          <Typography variant="subtitle2" align="center" style={{ marginTop: 10, marginBottom: 10 }}>
+            This is a registration form.
+          </Typography>
           <Paper className={classes.paper}>
             <StepForm />
           </Paper>
