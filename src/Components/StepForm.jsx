@@ -7,13 +7,15 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import StepConnector from "@material-ui/core/StepConnector";
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 import FirstStep from "./FirstStep";
 import SecondStep from "./SecondStep";
+import RepeatedStep from "./RepeatedStep";
+import Confirm from "./Confirm";
+import submited from "./../submited.png";
+import { Grid } from "@material-ui/core";
 
 const ColorlibConnector = withStyles({
   alternativeLabel: {
-    top: 22,
     left: "-50%",
     right: "50%",
   },
@@ -42,16 +44,19 @@ const useColorlibStepIconStyles = makeStyles({
     backgroundColor: "#ccc",
     zIndex: 1,
     color: "#fff",
-    width: 50,
-    height: 50,
+    width: 25,
+    height: 25,
     display: "flex",
     borderRadius: "50%",
     justifyContent: "center",
     alignItems: "center",
   },
   active: {
+    width: 28,
+    height: 28,
     visibility: "inherit",
     background: "#4fb1a3",
+    border: "2px solid white",
     boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
   },
   completed: {
@@ -110,6 +115,9 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     marginRight: theme.spacing(1),
+    backgroundColor: "#fd9e01",
+    color: "white",
+    borderRadius: "25px",
   },
   instructions: {
     textAlign: "center",
@@ -123,37 +131,19 @@ const useStyles = makeStyles((theme) => ({
       visibility: "hidden",
     },
   },
-  label1: {},
+  label: {
+    visibility: "hidden",
+  },
+  active: {
+    visibility: "initial",
+  },
+  completed: {
+    visibility: "initial",
+  },
 }));
 
 function getSteps() {
-  return ["", "Title", "Title1", "Title2", "Title3", "Title4", "Title5", "Title6", "Title7"];
-}
-
-function getStepContent(step, steps) {
-  // starts with one as step start at 1
-  switch (step) {
-    case 1:
-      return steps[step];
-    case 2:
-      return steps[step];
-    case 3:
-      return steps[step];
-    case 4:
-      return steps[step];
-    case 5:
-      return steps[step];
-    case 6:
-      return steps[step];
-    case 7:
-      return steps[step];
-    case 9:
-      return steps[step];
-    case 8:
-      return steps[step];
-    default:
-      return "Unknown step";
-  }
+  return ["", "Form", "Form1", "Form2", "Form3", "Form4", "Form5", "Form6", "Form7"];
 }
 
 const emailRegex = RegExp(/^[^@]+@[^@]+\.[^@]+$/);
@@ -230,12 +220,12 @@ export default function StepForm() {
     });
   };
 
-  const handleSteps = (step) => {
-    step = 2;
+  const handleSteps = (step, steps) => {
     switch (step) {
       case 1:
         return (
           <FirstStep
+            formTitle={steps[step]}
             handleNext={handleNext}
             handleChange={handleChange}
             values={fields}
@@ -246,6 +236,67 @@ export default function StepForm() {
       case 2:
         return (
           <SecondStep
+            formTitle={steps[step]}
+            handleNext={handleNext}
+            handleBack={handleBack}
+            handleChange={handleChange}
+            values={fields}
+            isError={isError}
+            filedError={filedError}
+          />
+        );
+      case 3:
+        return (
+          <RepeatedStep
+            formTitle={steps[step]}
+            handleNext={handleNext}
+            handleBack={handleBack}
+            handleChange={handleChange}
+            values={fields}
+            isError={isError}
+            filedError={filedError}
+          />
+        );
+      case 4:
+        return (
+          <RepeatedStep
+            formTitle={steps[step]}
+            handleNext={handleNext}
+            handleBack={handleBack}
+            handleChange={handleChange}
+            values={fields}
+            isError={isError}
+            filedError={filedError}
+          />
+        );
+      case 5:
+        return (
+          <RepeatedStep
+            formTitle={steps[step]}
+            handleNext={handleNext}
+            handleBack={handleBack}
+            handleChange={handleChange}
+            values={fields}
+            isError={isError}
+            filedError={filedError}
+          />
+        );
+      case 6:
+        return (
+          <RepeatedStep
+            formTitle={steps[step]}
+            handleNext={handleNext}
+            handleBack={handleBack}
+            handleChange={handleChange}
+            values={fields}
+            isError={isError}
+            filedError={filedError}
+          />
+        );
+      case 7:
+        return (
+          <Confirm
+            formTitle={steps[step]}
             handleNext={handleNext}
             handleBack={handleBack}
             handleChange={handleChange}
@@ -261,30 +312,39 @@ export default function StepForm() {
 
   return (
     <>
-      {activeStep === steps.length ? (
-        <div>
-          <Typography className={classes.instructions}>All steps completed - you&apos;re finished</Typography>
-          <Button onClick={handleReset} className={classes.button}>
-            Reset
-          </Button>
-        </div>
+      {activeStep === steps.length - 1 ? (
+        <>
+          <Grid style={{ justifyContent: "center" }} container spacing={2} noValidate>
+            <Grid item xs={12} sm={6}>
+              <img style={{ width: "100%" }} src={submited} alt="submited" />
+            </Grid>
+          </Grid>
+          <div style={{ display: "flex", marginTop: 50, justifyContent: "space-around" }}>
+            <Button onClick={handleReset} className={classes.button}>
+              Reset
+            </Button>
+          </div>
+        </>
       ) : (
         <div className={classes.root}>
           <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
             {steps.map((label, index) => (
               <Step className={classes.iconWrapper} key={index}>
-                <StepLabel className={classes.label1} StepIconComponent={ColorlibStepIcon}></StepLabel>
+                <StepLabel
+                  classes={{
+                    root: classes.root, // class name, e.g. `root-x`
+                    active: classes.active,
+                    label: classes.label,
+                    completed: classes.completed,
+                  }}
+                  StepIconComponent={ColorlibStepIcon}
+                >
+                  {label}
+                </StepLabel>
               </Step>
             ))}
           </Stepper>
-          {handleSteps(activeStep)}
-          <div>
-            <div>
-              <Typography variant="h4" className={classes.instructions}>
-                {getStepContent(activeStep, steps)}
-              </Typography>
-            </div>
-          </div>
+          {handleSteps(activeStep, steps)}
         </div>
       )}
     </>

@@ -1,20 +1,23 @@
-import React, { Fragment } from "react";
+import React from "react";
 import Grid from "@material-ui/core/Grid";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
-import { TextField } from "@material-ui/core";
+import { TextField, Typography } from "@material-ui/core";
 import ReactInputMask from "react-input-mask";
 
 // Destructure props
-const FirstStep = ({ handleNext, handleChange, values: { phone, country }, filedError, isError }) => {
+const FirstStep = ({ handleNext, formTitle, handleChange, values: { phone, country }, filedError, isError }) => {
   // Check if all values are not empty
   const isEmpty = country.length > 0 && phone.length > 0;
 
   return (
-    <Fragment>
+    <>
+      <Typography variant="h4" align="center" style={{ marginTop: 80 }}>
+        {formTitle}
+      </Typography>
       <Grid style={{ justifyContent: "center" }} container spacing={4} noValidate>
         <Grid item xs={8} sm={8}>
           <FormControl fullWidth required margin="normal">
@@ -47,12 +50,18 @@ const FirstStep = ({ handleNext, handleChange, values: { phone, country }, filed
           </ReactInputMask>
         </Grid>
       </Grid>
-      <div style={{ display: "flex", marginTop: 50, justifyContent: "flex-end" }}>
-        <Button variant="contained" disabled={!isEmpty || isError} color="primary" onClick={handleNext}>
+      <div style={{ display: "flex", marginTop: 50, justifyContent: "space-around" }}>
+        <Button
+          style={{ backgroundColor: "#fd9e01", color: "white", borderRadius: "25px" }}
+          variant="contained"
+          disabled={!isEmpty || isError}
+          color="primary"
+          onClick={handleNext}
+        >
           Continue
         </Button>
       </div>
-    </Fragment>
+    </>
   );
 };
 
