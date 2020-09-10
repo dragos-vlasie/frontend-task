@@ -135,7 +135,7 @@ const useStyles = makeStyles((theme) => ({
     visibility: "hidden",
   },
   active: {
-    visibility: "initial",
+    visibility: "hidden",
   },
   completed: {
     visibility: "initial",

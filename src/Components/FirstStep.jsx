@@ -33,8 +33,6 @@ const FirstStep = ({ handleNext, formTitle, handleChange, values: { phone, count
             mask="9-9999-9999"
             // value={}
             maskChar="-"
-            label="Number"
-            name="phone"
             placeholder="i.e: 0-0000-0000"
             defaultValue={phone}
             margin="normal"
@@ -42,6 +40,8 @@ const FirstStep = ({ handleNext, formTitle, handleChange, values: { phone, count
           >
             {() => (
               <TextField
+                label="Number"
+                name="phone"
                 error={filedError.phone !== ""}
                 fullWidth
                 helperText={filedError.phone !== "" ? `${filedError.phone}` : ""}
